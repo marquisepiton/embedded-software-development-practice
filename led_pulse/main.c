@@ -30,24 +30,26 @@ int main()
 
 	printf("Successfully open serial port!\n");
 
+	struct terminos tty;
+
+	if(tcgetattr(serial_port, &tty) != 0){
+        	printf("Error %i from tcgetattr: %s\n", errono, strerror(errno));
+        	return 1;
+	}
+
+	//set Baud Rate (speed)
+	cfsetispeed(&tty, B9600);
+	cfsetospeed(&tty, B9600);
+
+	tty.c_cflag &= ~PARENB;
+	tty.c_cflag &= ~CSTOPB;
+	tty.c_cflag &= ~CSIZE;
+	tty.c_cflag &= |= CS8;
+
+	tcsetattr(serial_port, TCSANOW, &tty);
+
 	close(serial_port);
 	return 0; 
 }
 
-struct terminos tty;
 
-if(tcgetattr(serial_port, &tty) != 0){
-	printf("Error %i from tcgetattr: %s\n", errono, strerror(errno));
-	return 1;
-}
-
-//set Baud Rate (speed)
-cfsetispeed(&tty, B9600);
-cfsetospeed(&tty, B9600);
-
-tty.c_cflag &= ~PARENB;
-tty.c_cflag &= ~CSTOPB;
-tty.c_cflag &= ~CSIZE;
-tty.c_cflag &= |= CS8;
-
-tcsetattr(serial_port, TCSANOW, &tty);
