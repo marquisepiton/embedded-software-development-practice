@@ -21,12 +21,15 @@ int main()
 	// Fixed path and flag
 	int serial_port = open("/dev/ttyACM0", O_RDWR);
 
-	if (serial_port) 
+	if (serial_port < 0) 
 	{
+		printf("%d\n",serial_port);
 		printf("Error %i from open: %\n", errno, strerror(errno));
-		return 1;
+		return -1;
 	}
 
 	printf("Successfully open serial port!\n");
+
+	close(serial_port);
 	return 0; 
 }
