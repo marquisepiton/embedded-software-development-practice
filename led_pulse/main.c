@@ -24,16 +24,16 @@ int main()
 	if (serial_port < 0) 
 	{
 		printf("%d\n",serial_port);
-		printf("Error %i from open: %\n", errno, strerror(errno));
+		printf("Error %i from open: %s\n", errno, strerror(errno));
 		return -1;
 	}
 
 	printf("Successfully open serial port!\n");
 
-	struct terminos tty;
+	struct termios tty;
 
 	if(tcgetattr(serial_port, &tty) != 0){
-        	printf("Error %i from tcgetattr: %s\n", errono, strerror(errno));
+        	printf("Error %i from tcgetattr: %s\n", errno, strerror(errno));
         	return 1;
 	}
 
@@ -44,10 +44,15 @@ int main()
 	tty.c_cflag &= ~PARENB;
 	tty.c_cflag &= ~CSTOPB;
 	tty.c_cflag &= ~CSIZE;
-	tty.c_cflag &= |= CS8;
+	tty.c_cflag |= CS8;
 
-	tcsetattr(serial_port, TCSANOW, &tty);
-
+	//tcsetattr(serial_port, TCSANOW, &tty);
+	 if (tcsetattr(serial_port, TCSANOW, &tty) != 0) {
+       		 printf("Error %i from tcsetattr: %s\n", errno, strerror(errno));
+        	 return 1;
+    	}
+	
+	printf("Successfully opened and configured serial port! \n");
 	close(serial_port);
 	return 0; 
 }
