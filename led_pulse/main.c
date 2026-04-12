@@ -19,8 +19,11 @@
 int main()
 {
 	// Part 1: I setup contract with my kernel.
-	//	
 	// Fixed path and flag
+	/*
+	 * Success: 3
+	 * Fail: -1
+	 */
 	int serial_port = open("/dev/ttyACM0", O_RDWR);
 
 	if (serial_port < 0) 
@@ -30,13 +33,15 @@ int main()
 		return -1;
 	}
 
-	//If serial_port is able to connect to device than it should return 1. 
+	//If serial_port is able to connect to device than it should return negative integeri. 
 	//
 	printf("%d\n", serial_port);
 	printf("Successfully open serial port!\n");
 
-	struct termios tty;
+	//https://man7.org/linux/man-pages/man3/termios.3.html#ATTRIBUTES
+	struct termios tty;i
 
+	// Return 0 or 1 if connection is set and valid 
 	if(tcgetattr(serial_port, &tty) != 0){
         	printf("Error %i from tcgetattr: %s\n", errno, strerror(errno));
         	return -1;
@@ -55,16 +60,15 @@ int main()
 	 * 
 	 * If I'm collecting data every 1 millisecond (1000 samples per second).
 	 *
-	 *
-	 *
 	 */
 	cfsetispeed(&tty, B9600);
 	cfsetospeed(&tty, B9600);
+	
 
-	tty.c_cflag &= ~PARENB;i
-	tty.c_cflag &= ~CSTOPB;
-	tty.c_cflag &= ~CSIZE;
-	tty.c_cflag |= CS8;
+	tty.c_cflag &= ~PARENB; // Enable parity generation on output and parity checking for input
+	tty.c_cflag &= ~CSTOPB; // Set two stop bits, rather than one. 
+	tty.c_cflag &= ~CSIZE; // Character size mask. Values are CS5, CS6, CS7, or CS8
+	tty.c_cflag |= CS8; //
 
 	//tcsetattr(serial_port, TCSANOW, &tty);
 	 if (tcsetattr(serial_port, TCSANOW, &tty) != 0) {
