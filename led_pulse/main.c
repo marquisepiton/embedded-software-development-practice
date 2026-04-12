@@ -18,6 +18,8 @@
 #include <fcntl.h> //File Control
 int main()
 {
+	// Part 1: I setup contract with my kernel.
+	//	
 	// Fixed path and flag
 	int serial_port = open("/dev/ttyACM0", O_RDWR);
 
@@ -53,6 +55,13 @@ int main()
     	}
 	
 	printf("Successfully opened and configured serial port! \n");
+
+	// Part 2 Sending and Waiting for data: 
+	// Read and write system calls
+	//
+	// ??????????????????????
+
+	
 	close(serial_port);
 	return 0; 
 }
