@@ -30,20 +30,38 @@ int main()
 		return -1;
 	}
 
+	//If serial_port is able to connect to device than it should return 1. 
+	//
+	printf("%d\n", serial_port);
 	printf("Successfully open serial port!\n");
 
 	struct termios tty;
 
 	if(tcgetattr(serial_port, &tty) != 0){
         	printf("Error %i from tcgetattr: %s\n", errno, strerror(errno));
-        	return 1;
+        	return -1;
 	}
 
-	//set Baud Rate (speed)
+	/*set Baud Rate (speed)
+	 * Baud rate is the speed at which data is transmitted in a communication system, measured in t		he number of signal changes (symbols) per second. 
+	 * Common Baud Rate: 9600, 19200, 38400, 57600, 115200
+	 *
+	 * Bit Rate = Baud Rate x Number of bits per symbol.
+	 *
+	 * What if I increase the Bd Rate?: 
+	 * Increasing the baud rate can significantly improve your project's performance, but makes the		connectiion more sensitive to hardware limits and external interference. 
+	 *
+	 * What would be instances for increasing?: 
+	 * 
+	 * If I'm collecting data every 1 millisecond (1000 samples per second).
+	 *
+	 *
+	 *
+	 */
 	cfsetispeed(&tty, B9600);
 	cfsetospeed(&tty, B9600);
 
-	tty.c_cflag &= ~PARENB;
+	tty.c_cflag &= ~PARENB;i
 	tty.c_cflag &= ~CSTOPB;
 	tty.c_cflag &= ~CSIZE;
 	tty.c_cflag |= CS8;
@@ -59,7 +77,7 @@ int main()
 	// Part 2 Sending and Waiting for data: 
 	// Read and write system calls
 	//
-	// ??????????????????????
+	
 
 	
 	close(serial_port);
