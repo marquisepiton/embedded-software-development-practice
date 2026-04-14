@@ -63,7 +63,7 @@ int main()
 	 */
 	cfsetispeed(&tty, B9600);
 	cfsetospeed(&tty, B9600);
-	
+	k
 
 	tty.c_cflag &= ~PARENB; // Enable parity generation on output and parity checking for input
 	tty.c_cflag &= ~CSTOPB; // Set two stop bits, rather than one. 
@@ -80,10 +80,10 @@ int main()
 
 	// Part 2 Sending and Waiting for data: 
 	// Read and write system calls
-	//
+	
 	
 
-	
+	//Close connection
 	close(serial_port);
 	return 0; 
 }
