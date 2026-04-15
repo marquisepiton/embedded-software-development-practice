@@ -63,7 +63,6 @@ int main()
 	 */
 	cfsetispeed(&tty, B9600);
 	cfsetospeed(&tty, B9600);
-	k
 
 	tty.c_cflag &= ~PARENB; // Enable parity generation on output and parity checking for input
 	tty.c_cflag &= ~CSTOPB; // Set two stop bits, rather than one. 
@@ -82,6 +81,30 @@ int main()
 	// Read and write system calls
 	
 	
+	// 1. Wait 2 seconds for the board to finish rebooting
+	printf("Waiting for board to wake up...\n");
+	usleep(2000000); 
+
+	// 2. Write (Send) one byte
+	char msg = 'A';
+	write(serial_port, &msg, 1);
+	printf("Sent: %c\n", msg);
+
+	// 3. Read (Listen) loop
+	printf("Waiting for reply...\n");
+	char read_buf[256];
+	while (1) {
+    	// read() will block (wait) here until a byte arrives
+    	int num_bytes = read(serial_port, &read_buf, sizeof(read_buf));
+
+    	if (num_bytes > 0) {
+        	// Print what we got from the Elegoo
+        	for(int i = 0; i < num_bytes; i++) {
+            		printf("Elegoo says: %c\n", read_buf[i]);
+        	}
+        	break; // Exit loop after we get a reply
+    	}
+	}	
 
 	//Close connection
 	close(serial_port);
