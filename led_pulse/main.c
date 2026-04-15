@@ -39,7 +39,7 @@ int main()
 	printf("Successfully open serial port!\n");
 
 	//https://man7.org/linux/man-pages/man3/termios.3.html#ATTRIBUTES
-	struct termios tty;i
+	struct termios tty;
 
 	// Return 0 or 1 if connection is set and valid 
 	if(tcgetattr(serial_port, &tty) != 0){
@@ -63,7 +63,8 @@ int main()
 	 */
 	cfsetispeed(&tty, B9600);
 	cfsetospeed(&tty, B9600);
-
+	
+	// Note: Terminal Flags Pg. 1301
 	tty.c_cflag &= ~PARENB; // Enable parity generation on output and parity checking for input
 	tty.c_cflag &= ~CSTOPB; // Set two stop bits, rather than one. 
 	tty.c_cflag &= ~CSIZE; // Character size mask. Values are CS5, CS6, CS7, or CS8
