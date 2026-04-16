@@ -117,7 +117,7 @@ int main()
 
 	while(1){
 		//Toggle specific bit for the LED
-		GPIO ^=(1 << 5);
+		GPIO_ODR ^=(1 << 5);
 		for(volatile int i = 0; i < 100000; i++);
 	}
 	//Close connection
