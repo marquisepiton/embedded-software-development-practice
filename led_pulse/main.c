@@ -81,7 +81,7 @@ int main()
 	// Part 2 Sending and Waiting for data: 
 	// Read and write system calls
 	
-	
+/*	
 	// 1. Wait 2 seconds for the board to finish rebooting
 	printf("Waiting for board to wake up...\n");
 	usleep(2000000); 
@@ -104,9 +104,22 @@ int main()
             		printf("Elegoo says: %c\n", read_buf[i]);
         	}
         	break; // Exit loop after we get a reply
-    	}
+    		}
 	}	
+*/
 
+#define GPIO_BASE 0x40020000
+#define GPIO_MODER (*(volatile unsigned int *)(GPIO_BASE + 0x00))
+#define GPIO_ODR (*(volatile unsigned int *)(GPIO_BASE + 0x14))
+
+	// Set pin as output (bit manipulation based on datasheet)
+	GPIO_MODER |= (1 << 10);
+
+	while(1){
+		//Toggle specific bit for the LED
+		GPIO ^=(1 << 5);
+		for(volatile int i = 0; i < 100000; i++);
+	}
 	//Close connection
 	close(serial_port);
 	return 0; 
