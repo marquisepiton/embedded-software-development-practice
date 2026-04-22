@@ -113,7 +113,7 @@ int main()
 #define GPIO_ODR (*(volatile unsigned int *)(GPIO_BASE + 0x14))
 
 	// Set pin as output (bit manipulation based on datasheet)
-	GPIO_MODER |= (1 << 10);
+	GPIO_MODER |= (1 << 5);
 
 	while(1){
 		//Toggle specific bit for the LED
