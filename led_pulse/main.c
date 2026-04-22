@@ -16,6 +16,9 @@
 #include <termios.h> //  Used fro controlling terminal I/O characteristics.
 #include <unistd.h> // Unix Standard 
 #include <fcntl.h> //File Control
+#include <avr/io.h>
+#define F_CPU 16000000UL // Tell the compiler the clock speed (16MHz)
+#include <util/delay.h>
 int main()
 {
 	// Part 1: I setup contract with my kernel.
@@ -108,17 +111,25 @@ int main()
 	}	
 */
 
-#define GPIO_BASE 0x40020000
-#define GPIO_MODER (*(volatile unsigned int *)(GPIO_BASE + 0x00))
-#define GPIO_ODR (*(volatile unsigned int *)(GPIO_BASE + 0x14))
-
+//#define GPIO_BASE 0x40020000
+//#define GPIO_MODER (*(volatile unsigned int *)(GPIO_BASE + 0x00))
+//#define GPIO_ODR (*(volatile unsigned int *)(GPIO_BASE + 0x2B))
+	
+	volatile uint8_t *portd = (uint8_t *)0x2B;
 	// Set pin as output (bit manipulation based on datasheet)
-	GPIO_MODER |= (1 << 5);
-
+	// 0x0B (0x2B) 
+	//GPIO_MODER |= (1 << 5);
+	DDRD |= (1 << DDD5)
 	while(1){
 		//Toggle specific bit for the LED
-		GPIO_ODR ^=(1 << 5);
-		for(volatile int i = 0; i < 100000; i++);
+//		GPIO_ODR ^=(1 << 5);
+//		for(volatile int i = 0; i < 100000; i++);
+//		PORTD |= (1 << PORTD5);
+        	_delay_ms(500); // Wait 500ms
+
+        	// 3. Set PD5 LOW (Turn LED off)
+        	PORTD &= ~(1 << PORTD5);
+        	_delay_ms(500); // Wait 500ms
 	}
 	//Close connection
 	close(serial_port);
